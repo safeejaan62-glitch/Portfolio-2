@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video2Site</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo-mark">&#9654;</span><div><strong>Video2Site</strong><small id="project-title">Untitled project</small></div></div>
+  <div class="top-actions">
+    <span class="pill" id="mode-pill" title="Analysis mode">checking...</span>
+    <input id="token" type="password" placeholder="API token" aria-label="API token" hidden>
+    <button class="icon-btn" id="theme-btn" aria-label="Toggle light/dark theme">&#9788;</button>
+  </div>
+</header>
+
+<main class="layout">
+  <aside class="panel left">
+    <h2>1. Reference video</h2>
+    <div id="drop" class="drop" tabindex="0" role="button" aria-label="Upload video">
+      <p><strong>Drop a video here</strong><br>or click to browse<br><small>MP4, MOV, WebM</small></p>
+      <input id="file" type="file" accept=".mp4,.mov,.webm,video/mp4,video/quicktime,video/webm" hidden>
+    </div>
+    <div class="progress" id="up-progress" hidden><div class="bar"></div><span>0%</span></div>
+    <video id="video-preview" controls playsinline hidden></video>
+    <p id="file-info" class="muted"></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <label for="prompt" class="lbl">Edit prompt <small class="muted">(optional guidance)</small></label>
+    <textarea id="prompt" rows="3" maxlength="2000" placeholder="e.g. Use a warmer palette and a bigger hero headline"></textarea>
+    <div class="row">
+      <button class="btn primary" id="analyze" disabled>Analyze Video</button>
+      <button class="btn" id="regen" disabled>Regenerate Design</button>
+    </div>
+
+    <h2>2. Progress</h2>
+    <div class="progress"><div class="bar" id="job-bar"></div><span id="job-pct">0%</span></div>
+    <ol class="steps" id="steps">
+      <li data-s="extracting">Extract frames</li><li data-s="analyzing">Analyze interface</li>
+      <li data-s="generating">Generate code</li><li data-s="packaging">Package project</li>
+    </ol>
+    <p id="job-msg" class="muted">Waiting for a video.</p>
+
+    <h2>Reference frames</h2>
+    <div id="frames" class="frames"><p class="muted">Frames appear after analysis.</p></div>
+  </aside>
+
+  <section class="panel center">
+    <div class="tabs-bar">
+      <div class="tabset" role="tablist" id="main-tabs">
+        <button role="tab" aria-selected="true" data-tab="preview">Preview</button>
+        <button role="tab" aria-selected="false" data-tab="analysis">AI analysis</button>
+        <button role="tab" aria-selected="false" data-tab="code">Code</button>
+      </div>
+      <button class="btn primary" id="download" disabled>Download Project</button>
+    </div>
+
+    <div id="tab-preview" class="tabview">
+      <div class="toolbar">
+        <div class="seg" id="devices"><button data-w="100%" class="on">Desktop</button><button data-w="820px">Tablet</button><button data-w="390px">Mobile</button></div>
+        <button class="btn" id="refresh">Refresh</button>
+        <label class="muted">Reference overlay
+          <select id="compare-frame"><option value="">Off</option></select></label>
+        <input type="range" id="opacity" min="0" max="100" value="50" aria-label="Overlay opacity" hidden>
+      </div>
+      <div class="stage" id="stage">
+        <div class="device" id="device">
+          <iframe id="preview" title="Generated website preview" sandbox="allow-scripts"></iframe>
+          <img id="overlay" alt="" hidden>
+        </div>
+        <p class="muted empty" id="preview-empty">The generated website will appear here.</p>
+      </div>
+    </div>
+
+    <div id="tab-analysis" class="tabview" hidden>
+      <div id="analysis" class="analysis"><p class="muted">No analysis yet.</p></div>
+    </div>
+
+    <div id="tab-code" class="tabview" hidden>
+      <div class="toolbar">
+        <div class="seg" id="file-tabs">
+          <button data-f="index.html" class="on">HTML</button><button data-f="styles.css">CSS</button>
+          <button data-f="script.js">JavaScript</button><button data-f="backend/main.py">Python</button>
+        </div>
+        <button class="btn" id="edit-toggle">Edit</button>
+        <button class="btn primary" id="save-file" hidden>Apply changes</button>
+      </div>
+      <pre class="code" id="code-view"><code id="code-block"></code></pre>
+      <textarea id="code-edit" class="code" spellcheck="false" hidden></textarea>
+    </div>
+  </section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

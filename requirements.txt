@@ -1,0 +1,9 @@
+# Core server (Starlette is the ASGI toolkit FastAPI is built on; same routing/ASGI model)
+starlette>=0.40
+uvicorn>=0.30
+python-multipart>=0.0.9
+# Video frame extraction fallback + image analysis
+opencv-python-headless>=4.9
+numpy>=1.26
+# Vision/code-gen model calls
+requests>=2.31
